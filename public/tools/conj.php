@@ -1,3 +1,5 @@
+<head>
+<title>Verb conjugator</title>
 <style>
     table {border-collapse: collapse}
     td, th {border: 1px solid #888; padding:3px 7px}
@@ -6,6 +8,7 @@
     tr.skip td {border: 0}
     input {font-size:24px}
 </style>
+</head>
 
 <?php
 
@@ -61,7 +64,20 @@ function root_stem($stem, $termintaor)
 
 function is_vowel($symbol)
 {
-    return in_array($symbol, ['a', 'o', 'i', 'y', 'e', 'á', 'ó', 'ú']);
+    return in_array($symbol, ['a', 'o', 'i', 'y', 'u', 'e', 'á', 'ó', 'ú']);
+}
+
+function is_opened($stem)
+{
+    $l = strlen($stem);
+    for ($i = 0; $i < $l; $i++)
+    {
+        if ($i > 1 && !is_vowel($stem[$i]) && !is_vowel($stem[$i - 1]))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 ?>
@@ -70,62 +86,69 @@ function is_vowel($symbol)
     <input type="text" name="verb" autofocus value="<?=$inf?>"/>
 </form>
 
+<h3>Transtalion</h3>
+<?
+    if (isset ($verbs[$inf])) echo implode(', ', $verbs[$inf]);
+    else echo '[not found in the vocabulary]';
+?>
+<br/><br/>
+
 <h3>Indicative</h3>
 <table>
     <thead>
         <tr>
             <th>Factor</th><th>Period</th>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<th>' . pers_pron($p, $n) . '</th>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<th>' . pers_pron($p, $n) . '</th>'; ?>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td rowspan="3">Incomplete</td><td>Present</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn(vowel_stem($inf), $p, $n) . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn(vowel_stem($inf), $p, $n) . '</td>'; ?>
         </tr>
         <tr>
             <td>Past</td>
             <?
             $stem = vowel_stem($inf);
 
-            if (substr($stem, -1) == 'o')
-            {
-                if (substr($stem, -2) == 'uo') $stem = substr($stem, 0, -2) . 'vu';
-                else $stem = substr($stem, 0, -1) . 'u';
-            }
-            else if (substr($stem, -2) == 've') $stem = substr($stem, 0, -2) . 'vu';
+            if (substr($stem, -2) == 'uo') $stem = substr($stem, 0, -2) . 'vu';
+            else if (substr($stem, -1) == 'o') $stem = substr($stem, 0, -1) . 'u';
             else if (substr($stem, -2) == 'ae') $stem = substr($stem, 0, -2) . 'au';
+
+            // if the previous syllable is closed, the vowel is exchanged with 'u'
+            else if (!is_opened(substr($stem, 0, -1))) $stem = substr($stem, 0, -1) . 'u';
+            else if (is_vowel(substr($stem, -1)) && is_vowel(substr($stem, -2, 1))) $stem = substr($stem, 0, -1) . 'u';
             else $stem .= 'u';
 
-            for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn($stem, $p, $n) . '</td>'; ?>
+            for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn($stem, $p, $n) . '</td>'; ?>
         </tr>
         <tr>
             <td>Future</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn('tope', $p, $n) . ' ' . $inf . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('tope', $p, $n) . ' ' . $inf . '</td>'; ?>
         </tr>
         <tr>
             <td rowspan="3">Ongoing</td><td>Present</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn('o', $p, $n) . ' ke ' . vowel_stem($inf) . 'túh' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('o', $p, $n) . ' ke ' . vowel_stem($inf) . 'tuh' . '</td>'; ?>
         </tr>
         <tr>
             <td>Past</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn('u', $p, $n) . ' ke ' . vowel_stem($inf) . 'túh' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('u', $p, $n) . ' ke ' . vowel_stem($inf) . 'tuh' . '</td>'; ?>
         </tr>
         <tr>
             <td>Future</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn('tope', $p, $n) . ' oj ke ' . vowel_stem($inf) . 'túh' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('tope', $p, $n) . ' oj ke ' . vowel_stem($inf) . 'tuh' . '</td>'; ?>
         </tr>
         <tr>
             <td rowspan="3">Complete</td><td>Present</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . pers_pron($p, $n) . ' ' .  vowel_stem($inf) . 's' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . pers_pron($p, $n) . ' ' .  vowel_stem($inf) . 's' . '</td>'; ?>
         </tr>
         <tr>
             <td>Past</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . conj_pn('u', $p, $n) . ' ke ' . vowel_stem($inf) . 's' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('u', $p, $n) . ' ke ' . vowel_stem($inf) . 's' . '</td>'; ?>
         </tr>
         <tr>
             <td>Future</td>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<td>' . pers_pron($p, $n) . ' topejs ' . vowel_stem($inf) . 'j' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . pers_pron($p, $n) . ' topejs ' . vowel_stem($inf) . 'j' . '</td>'; ?>
         </tr>
      </tbody>
 </table>
@@ -135,7 +158,7 @@ function is_vowel($symbol)
 <table>
     <thead>
         <tr>
-            <? for ($n = 1; $n <=3; $n++) for ($p = 1; $p <=3; $p++) echo '<th>' . pers_pron($p, $n) . '</th>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<th>' . pers_pron($p, $n) . '</th>'; ?>
         </tr>
     </thead>
     <tbody>
@@ -148,6 +171,7 @@ function is_vowel($symbol)
 
 <h3>Casuative</h3>
 <? echo vowel_stem($inf) . 'soj'; ?>
+<br/><br/>
 
 <h3>Nominative forms</h3>
 <table>
