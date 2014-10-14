@@ -1,11 +1,11 @@
 <?php
 
-/*
-    Onomatopoeic verbs
-*/
-
 return array
 (
+    /*
+        Onomatopoeic verbs
+    */
+
     'aaej'	    => ['cry', 'scream'],
     'aćhej'	    => ['sneeze'],
     'aħummej'	=> ['think'],
@@ -34,4 +34,23 @@ return array
     'toppej'	=> ['go'],
     'záppej'	=> ['close'],
     'ziipej'	=> ['process'],
+
+    /*
+        Non-onomatopoeic verbs
+    */
+
+    'oj'	    => ['be'],
+    'dej'	    => ['give'],
+    'vej'	    => ['lead'],
+    'vij'	    => ['see'],
+    'stej'	    => ['stand'],
+    'gnoj'	    => ['know', 'know how'],
+    'guuglej'	=> ['search'],
+    'nuoj'	    => ['remember'],
+
+    /*
+        Onomatopoeic-derived verbs
+    */
+
+    'topesoj'	=> ['become'],
 );
