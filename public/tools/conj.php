@@ -140,7 +140,7 @@ function is_opened($stem)
         </tr>
         <tr>
             <td rowspan="3">Complete</td><td>Present</td>
-            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . pers_pron($p, $n) . ' ' .  vowel_stem($inf) . 's' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('o', $p, $n) . ' ke ' .  vowel_stem($inf) . 's' . '</td>'; ?>
         </tr>
         <tr>
             <td>Past</td>
@@ -148,7 +148,7 @@ function is_opened($stem)
         </tr>
         <tr>
             <td>Future</td>
-            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . pers_pron($p, $n) . ' topejs ' . vowel_stem($inf) . 'j' . '</td>'; ?>
+            <? for ($n = 1; $n <= 3; $n++) for ($p = 1; $p <= 3; $p++) echo '<td>' . conj_pn('tope', $p, $n) . ' oj ke ' . vowel_stem($inf) . 's' . '</td>'; ?>
         </tr>
      </tbody>
 </table>
