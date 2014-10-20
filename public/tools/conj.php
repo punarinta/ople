@@ -170,7 +170,10 @@ function is_opened($stem)
 <br/>
 
 <h3>Casuative</h3>
-<? echo vowel_stem($inf) . 'soj'; ?>
+<?
+if (substr($inf, -3) == 'soj') echo '—';
+else echo vowel_stem($inf) . 'soj';
+?>
 <br/><br/>
 
 <h3>Nominative forms</h3>
